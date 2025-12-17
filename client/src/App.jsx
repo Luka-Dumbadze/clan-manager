@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // State to hold the message from the server
+  const [message, setMessage] = useState("Loading...");
+
+  // Effect to fetch data when the component mounts
+  useEffect(() => {
+    fetch("http://localhost:3001/")
+      .then((res) => res.text()) // Convert response to text
+      .then((data) => setMessage(data)) // Save it to state
+      .catch((err) => setMessage("Error connecting to server"));
+  }, []); // Empty array [] means "run once on load"
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    <div style={{ padding: "50px", fontFamily: "Arial" }}>
+      <h1>The Clan Manager</h1>
+      <h2>Status Report:</h2>
+      <p style={{ color: "green", fontSize: "24px", fontWeight: "bold" }}>
+        {message}
       </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
